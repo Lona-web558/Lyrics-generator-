@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyrics Generator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .gradient-background {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            min-height: 100vh;
+        }
+        .lyrics-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .generated-lyrics {
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 200px;
+        }
+    </style>
+</head>
+<body class="gradient-background">
+    <div class="container py-5">
+        <div class="lyrics-container p-4">
+            <h1 class="text-center mb-4">🎵 Lyrics Generator</h1>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="theme" class="form-label">Theme</label>
+                    <input type="text" class="form-control" id="theme" placeholder="Enter theme (e.g., love, nature, friendship)">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="style" class="form-label">Style</label>
+                    <select class="form-select" id="style">
+                        <option value="pop">Pop</option>
+                        <option value="rock">Rock</option>
+                        <option value="rap">Rap</option>
+                        <option value="country">Country</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="verses" class="form-label">Number of Verses</label>
+                    <input type="number" class="form-control" id="verses" min="1" max="5" value="2">
+                </div>
+                <div class="col-md-6">
+                    <label for="mood" class="form-label">Mood</label>
+                    <select class="form-select" id="mood">
+                        <option value="happy">Happy</option>
+                        <option value="sad">Sad</option>
+                        <option value="energetic">Energetic</option>
+                        <option value="romantic">Romantic</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" onclick="generateLyrics()">Generate Lyrics</button>
+            </div>
+
+            <div class="mt-4">
+                <h3>Generated Lyrics:</h3>
+                <div id="lyricsOutput" class="generated-lyrics"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lyrics = {
+            pop: {
+                happy: [
+                    "Dancing in the moonlight\nFeeling so alive\n",
+                    "Sunshine in my heart\nNever gonna fall apart\n",
+                    "Living life with joy\nEvery moment to enjoy\n"
+                ],
+                sad: [
+                    "Memories fade away\nLike stars at break of day\n",
+                    "Empty rooms and silence\nBroken promises and distance\n",
+                    "Time heals all wounds they say\nBut mine still remain today\n"
+                ]
+            },
+            rock: {
+                energetic: [
+                    "Thunder in my veins\nBreaking all the chains\n",
+                    "Wild and free tonight\nRaging with delight\n",
+                    "Power surge within\nLet the show begin\n"
+                ],
+                romantic: [
+                    "Electric hearts collide\nNo more need to hide\n",
+                    "Rock and roll romance\nTake another chance\n",
+                    "Guitar strings and dreams\nNothing's as it seems\n"
+                ]
+            }
+        };
+
+        function generateLyrics() {
+            const theme = document.getElementById('theme').value;
+            const style = document.getElementById('style').value;
+            const verses = document.getElementById('verses').value;
+            const mood = document.getElementById('mood').value;
+            
+            let generatedLyrics = `Theme: ${theme}\nStyle: ${style}\nMood: ${mood}\n\n`;
+
+            // Generate chorus
+            generatedLyrics += "--- Chorus ---\n";
+            generatedLyrics += `${theme} in my mind\n`;
+            generatedLyrics += `Leaving the world behind\n`;
+            generatedLyrics += `Every day and night\n`;
+            generatedLyrics += `Everything feels right\n\n`;
+
+            // Generate verses
+            for (let i = 1; i <= verses; i++) {
+                generatedLyrics += `--- Verse ${i} ---\n`;
+                
+                // Get random lyrics from the appropriate style and mood if available
+                if (lyrics[style] && lyrics[style][mood]) {
+                    const randomVerse = lyrics[style][mood][Math.floor(Math.random() * lyrics[style][mood].length)];
+                    generatedLyrics += randomVerse;
+                } else {
+                    // Default verse if style/mood combination not found
+                    generatedLyrics += `Verse ${i} about ${theme}\n`;
+                    generatedLyrics += `Following the ${mood} mood\n`;
+                    generatedLyrics += `In ${style} style we groove\n`;
+                }
+                generatedLyrics += "\n";
+            }
+
+            document.getElementById('lyricsOutput').textContent = generatedLyrics;
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
